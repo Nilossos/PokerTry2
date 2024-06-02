@@ -7,14 +7,12 @@ namespace Poker1.Models
     public class Card : IComparable<Card>
     {
         public CardRank Rank { get; set; }
-        public CardSuits Suit { get; set; }
-        public string ImageUrl { get; set; }
+        public CardSuit Suit { get; set; }
         public Image Image { get; set; }
-        public Card(CardSuits suit, CardRank rank)
+        public Card(CardSuit suit, CardRank rank)
         {
             Rank = rank;
             Suit = suit;
-            ImageUrl = $"{suit}s/{suit}s-{rank}";
 
             string resourceName = $"{suit}s_{rank}";
             Image = (Image)Resources.ResourceManager.GetObject(resourceName);

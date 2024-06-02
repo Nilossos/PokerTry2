@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace PokerTry2
 {
-    public partial class BottomCenterHand : UserControl
+    public partial class RightCenterHand : UserControl
     {
-        public BottomCenterHand()
+        public RightCenterHand()
         {
             InitializeComponent();
+        }
+
+        private void DealerMark_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace PokerTry2
 {
-    partial class TopHand
+    partial class LeftCenterHand
     {
         /// <summary> 
         /// Обязательная переменная конструктора.
@@ -20,17 +20,21 @@
             base.Dispose(disposing);
         }
 
+
         #region Код, автоматически созданный конструктором компонентов
 
         /// <summary> 
         /// Требуемый метод для поддержки конструктора — не изменяйте 
         /// содержимое этого метода с помощью редактора кода.
         /// </summary>
+        /// 
         private void InitializeComponent()
         {
             HandPanel = new TableLayoutPanel();
             DealerMark = new PictureBox();
-            label1 = new Label();
+            Stack = new Label();
+            LastBet = new Label();
+            BetType = new Label();
             HandPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DealerMark).BeginInit();
             SuspendLayout();
@@ -40,53 +44,78 @@
             HandPanel.AutoSize = true;
             HandPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             HandPanel.BackColor = Color.Transparent;
-            HandPanel.ColumnCount = 5;
-            HandPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 72F));
-            HandPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 72F));
-            HandPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 72F));
-            HandPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 72F));
-            HandPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 72F));
-            HandPanel.Controls.Add(DealerMark, 4, 1);
-            HandPanel.Controls.Add(label1, 0, 1);
+            HandPanel.ColumnCount = 2;
+            HandPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 96F));
+            HandPanel.ColumnStyles.Add(new ColumnStyle());
+            HandPanel.Controls.Add(DealerMark, 1, 4);
+            HandPanel.Controls.Add(Stack, 1, 0);
+            HandPanel.Controls.Add(LastBet, 1, 1);
+            HandPanel.Controls.Add(BetType, 1, 2);
             HandPanel.Dock = DockStyle.Fill;
             HandPanel.Location = new Point(0, 0);
             HandPanel.Name = "HandPanel";
-            HandPanel.RowCount = 2;
-            HandPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 96F));
-            HandPanel.RowStyles.Add(new RowStyle());
-            HandPanel.Size = new Size(360, 168);
+            HandPanel.RowCount = 5;
+            HandPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 72F));
+            HandPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 72F));
+            HandPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 72F));
+            HandPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 72F));
+            HandPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 72F));
+            HandPanel.Size = new Size(162, 360);
             HandPanel.TabIndex = 0;
             // 
             // DealerMark
             // 
             DealerMark.Image = Properties.Resources.DealerMark;
-            DealerMark.Location = new Point(291, 99);
+            DealerMark.Location = new Point(99, 291);
             DealerMark.Name = "DealerMark";
             DealerMark.Size = new Size(60, 66);
             DealerMark.SizeMode = PictureBoxSizeMode.AutoSize;
-            DealerMark.TabIndex = 1;
+            DealerMark.TabIndex = 2;
             DealerMark.TabStop = false;
             // 
-            // label1
+            // Stack
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(3, 96);
-            label1.Name = "label1";
-            label1.Size = new Size(50, 20);
-            label1.TabIndex = 0;
-            label1.Text = "label1";
+            Stack.AutoSize = true;
+            Stack.Font = new Font("Segoe UI", 12F);
+            Stack.ForeColor = Color.White;
+            Stack.Location = new Point(96, 0);
+            Stack.Margin = new Padding(0);
+            Stack.Name = "Stack";
+            Stack.Size = new Size(0, 28);
+            Stack.TabIndex = 0;
             // 
-            // TopHand
+            // LastBet
+            // 
+            LastBet.AutoSize = true;
+            LastBet.Font = new Font("Segoe UI", 12F);
+            LastBet.ForeColor = Color.White;
+            LastBet.Location = new Point(96, 72);
+            LastBet.Margin = new Padding(0);
+            LastBet.Name = "LastBet";
+            LastBet.Size = new Size(0, 28);
+            LastBet.TabIndex = 3;
+            // 
+            // BetType
+            // 
+            BetType.AutoSize = true;
+            BetType.Font = new Font("Segoe UI", 12F);
+            BetType.ForeColor = Color.White;
+            BetType.Location = new Point(96, 144);
+            BetType.Margin = new Padding(0);
+            BetType.Name = "BetType";
+            BetType.Size = new Size(0, 28);
+            BetType.TabIndex = 4;
+            // 
+            // LeftCenterHand
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             BackColor = Color.Transparent;
-            BorderStyle = BorderStyle.FixedSingle;
             Controls.Add(HandPanel);
-            Name = "TopHand";
-            Size = new Size(360, 168);
+            Name = "LeftCenterHand";
+            Size = new Size(162, 360);
             HandPanel.ResumeLayout(false);
             HandPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)DealerMark).EndInit();
@@ -97,7 +126,9 @@
         #endregion
 
         private TableLayoutPanel HandPanel;
-        private Label label1;
+        private Label Stack;
         private PictureBox DealerMark;
+        private Label LastBet;
+        private Label BetType;
     }
 }

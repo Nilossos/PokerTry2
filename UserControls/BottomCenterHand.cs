@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace PokerTry2
 {
-    public partial class RightCenterHand : UserControl
+    public partial class BottomCenterHand : UserControl
     {
-        public RightCenterHand()
+        public BottomCenterHand()
         {
             InitializeComponent();
+        }
+
+        private void Stack_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

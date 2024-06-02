@@ -1,27 +1,43 @@
 ﻿using Poker.Entity;
 using Poker1.Models;
+using Poker1.Services;
+using PokerTry2.Controllers;
+using PokerTry2.Models;
 using System.Reflection;
 
 namespace PokerTry2
 {
     public partial class Form1 : Form
     {
-        private readonly GameController gameController;
+        private readonly DealController dealController;
+        private readonly BetController betController;
+        private readonly IGameStateService gameStateService;
 
-        public Form1()
+        public Form1(IGameStateService gameStateService, DealController dealController, BetController betController)
         {
             InitializeComponent();
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
-            gameController = new GameController(panel1);
-            StartDeal();
+
+            this.gameStateService = gameStateService;
+            this.betController = betController;
+            this.dealController = dealController;
+
+            gameStateService.Reset(TableField, ButtonsField);
+    
+            dealController.StartDeal();
+            betController.StartBets();
         }
 
-        private void StartDeal()
+        private void Bet_Click(object sender, EventArgs e)
         {
-            gameController.AssignDealer(panel1);
-            gameController.CollectAnte(50);
-            gameController.DealCards(panel1);
+            betController.Bet(gameStateService.Players.First(), 100);
+        }
+        private void Call_Click(object sender, EventArgs e)
+        {
+            betController.Call(gameStateService.Players.First());
+        }
+        private void Fold_Click(object sender, EventArgs e)
+        {
+            betController.Fold(gameStateService.Players.First());
         }
     }
 }

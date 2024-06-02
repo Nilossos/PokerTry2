@@ -16,13 +16,13 @@ namespace Poker1.Models
             {
                 for (int rank = 0; rank <= 12; rank++)
                 {
-                    Cards.Add(new Card((CardSuits)System.Enum.GetValues(typeof(CardSuits)).GetValue(suit),
+                    Cards.Add(new Card((CardSuit)System.Enum.GetValues(typeof(CardSuit)).GetValue(suit),
                         (CardRank)System.Enum.GetValues(typeof(CardRank)).GetValue(rank)));
                 }
             }
-            this.shuffle();
+            this.Shuffle();
         }
-        public void shuffle()
+        private void Shuffle()
         {
             Random random = new Random();
             for (int i = Cards.Count - 1; i > 0; i--)
@@ -34,7 +34,7 @@ namespace Poker1.Models
             }
         }
 
-        public Card getCard()
+        public Card GetCard()
         {
             if (cardsUsed == Cards.Count)
                 throw new Exception("No cards are left in the deck.");

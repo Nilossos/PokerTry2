@@ -9,7 +9,7 @@ namespace Poker.Models
     /// <summary>
     /// Represents the Suit for a card in a 52 card deck
     /// </summary>
-    public enum CardSuits
+    public enum CardSuit
     {
         Club, Diamond, Heart, Spade
     }

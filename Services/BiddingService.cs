@@ -1,6 +1,4 @@
-﻿//using Microsoft.AspNetCore.SignalR;
-//using Poker.Entity;
-//using Poker.Models;
+﻿//using Poker.Entity;
 
 //namespace Poker1.Services
 //{
@@ -12,15 +10,6 @@
 
 //    public class BiddingService : IBiddingService
 //    {
-//        private readonly IGameStateService _gameStateService;
-//        private readonly IHubContext<BiddingHub> _hubContext;
-
-//        public BiddingService(IGameStateService gameStateService, IHubContext<BiddingHub> hubContext)
-//        {
-//            _gameStateService = gameStateService;
-//            _hubContext = hubContext;
-//        }
-
 //        public void PlaceBet(Player player, int amount)
 //        {
 //            if (player == null || amount == 0) return;
