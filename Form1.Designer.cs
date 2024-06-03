@@ -2,7 +2,7 @@
 
 namespace PokerTry2
 {
-    partial class Form1
+    partial class Poker
     {
         /// <summary>
         ///  Required designer variable.
@@ -35,25 +35,33 @@ namespace PokerTry2
             pictureBox1 = new PictureBox();
             UI = new TableLayoutPanel();
             ButtonsField = new Panel();
-            Fold = new Button();
+            tableLayoutPanel2 = new TableLayoutPanel();
             Call = new Button();
+            BetAmount = new TextBox();
+            Replace = new Button();
+            button1 = new Button();
+            button2 = new Button();
             Bet = new Button();
+            Fold = new Button();
             TableField.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             UI.SuspendLayout();
             ButtonsField.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // TableField
             // 
+            TableField.BackColor = Color.Green;
             TableField.BackgroundImage = Properties.Resources.table11;
             TableField.BackgroundImageLayout = ImageLayout.Zoom;
             TableField.Controls.Add(Pot);
             TableField.Controls.Add(pictureBox1);
             TableField.Dock = DockStyle.Fill;
-            TableField.Location = new Point(3, 3);
+            TableField.Location = new Point(0, 0);
+            TableField.Margin = new Padding(0);
             TableField.Name = "TableField";
-            TableField.Size = new Size(1476, 721);
+            TableField.Size = new Size(1482, 727);
             TableField.TabIndex = 0;
             // 
             // Pot
@@ -64,9 +72,9 @@ namespace PokerTry2
             Pot.ForeColor = Color.White;
             Pot.Location = new Point(641, 285);
             Pot.Name = "Pot";
-            Pot.Size = new Size(101, 54);
+            Pot.Size = new Size(123, 54);
             Pot.TabIndex = 6;
-            Pot.Text = "Pot: ";
+            Pot.Text = "Pot: 0";
             // 
             // pictureBox1
             // 
@@ -97,61 +105,146 @@ namespace PokerTry2
             // 
             // ButtonsField
             // 
-            ButtonsField.Controls.Add(Fold);
-            ButtonsField.Controls.Add(Call);
+            ButtonsField.Controls.Add(tableLayoutPanel2);
             ButtonsField.Controls.Add(Bet);
+            ButtonsField.Controls.Add(Fold);
             ButtonsField.Dock = DockStyle.Fill;
-            ButtonsField.Location = new Point(3, 730);
+            ButtonsField.Location = new Point(0, 727);
+            ButtonsField.Margin = new Padding(0);
             ButtonsField.Name = "ButtonsField";
-            ButtonsField.Size = new Size(1476, 90);
+            ButtonsField.Size = new Size(1482, 96);
             ButtonsField.TabIndex = 1;
             // 
-            // Fold
+            // tableLayoutPanel2
             // 
-            Fold.Location = new Point(641, 23);
-            Fold.Name = "Fold";
-            Fold.Size = new Size(94, 29);
-            Fold.TabIndex = 2;
-            Fold.Text = "Fold";
-            Fold.UseVisualStyleBackColor = true;
-            Fold.Click += Fold_Click;
+            tableLayoutPanel2.ColumnCount = 3;
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.Controls.Add(Call, 0, 1);
+            tableLayoutPanel2.Controls.Add(BetAmount, 0, 0);
+            tableLayoutPanel2.Controls.Add(Replace, 2, 1);
+            tableLayoutPanel2.Controls.Add(button1, 1, 0);
+            tableLayoutPanel2.Controls.Add(button2, 1, 1);
+            tableLayoutPanel2.Dock = DockStyle.Fill;
+            tableLayoutPanel2.Location = new Point(94, 0);
+            tableLayoutPanel2.Margin = new Padding(0);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 2;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.Size = new Size(1294, 96);
+            tableLayoutPanel2.TabIndex = 3;
             // 
             // Call
             // 
-            Call.Location = new Point(482, 22);
+            Call.BackColor = Color.Gray;
+            Call.Dock = DockStyle.Fill;
+            Call.Enabled = false;
+            Call.FlatStyle = FlatStyle.Popup;
+            Call.Location = new Point(0, 48);
+            Call.Margin = new Padding(0);
             Call.Name = "Call";
-            Call.Size = new Size(94, 29);
+            Call.Size = new Size(582, 48);
             Call.TabIndex = 1;
             Call.Text = "Check";
-            Call.UseVisualStyleBackColor = true;
+            Call.UseVisualStyleBackColor = false;
             Call.Click += Call_Click;
+            // 
+            // BetAmount
+            // 
+            BetAmount.BorderStyle = BorderStyle.None;
+            BetAmount.Dock = DockStyle.Fill;
+            BetAmount.Font = new Font("Segoe UI", 12F);
+            BetAmount.Location = new Point(0, 0);
+            BetAmount.Margin = new Padding(0);
+            BetAmount.Name = "BetAmount";
+            BetAmount.PlaceholderText = "Amount";
+            BetAmount.Size = new Size(582, 27);
+            BetAmount.TabIndex = 2;
+            BetAmount.KeyPress += BetAmount_KeyPress;
+            // 
+            // Replace
+            // 
+            Replace.BackColor = Color.Gray;
+            Replace.Enabled = false;
+            Replace.FlatStyle = FlatStyle.Popup;
+            Replace.Location = new Point(646, 48);
+            Replace.Margin = new Padding(0);
+            Replace.Name = "Replace";
+            Replace.Size = new Size(634, 45);
+            Replace.TabIndex = 3;
+            Replace.Text = "Replace";
+            Replace.UseVisualStyleBackColor = false;
+            Replace.Click += Replace_Click;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(585, 3);
+            button1.Name = "button1";
+            button1.Size = new Size(58, 29);
+            button1.TabIndex = 4;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(585, 51);
+            button2.Name = "button2";
+            button2.Size = new Size(58, 29);
+            button2.TabIndex = 5;
+            button2.Text = "button2";
+            button2.UseVisualStyleBackColor = true;
             // 
             // Bet
             // 
-            Bet.Location = new Point(315, 23);
+            Bet.BackColor = Color.Gray;
+            Bet.Dock = DockStyle.Left;
+            Bet.Enabled = false;
+            Bet.FlatStyle = FlatStyle.Flat;
+            Bet.Location = new Point(0, 0);
+            Bet.Margin = new Padding(0);
             Bet.Name = "Bet";
-            Bet.Size = new Size(94, 29);
+            Bet.Size = new Size(94, 96);
             Bet.TabIndex = 0;
             Bet.Text = "Bet";
-            Bet.UseVisualStyleBackColor = true;
+            Bet.UseVisualStyleBackColor = false;
             Bet.Click += Bet_Click;
             // 
-            // Form1
+            // Fold
+            // 
+            Fold.BackColor = Color.Gray;
+            Fold.Dock = DockStyle.Right;
+            Fold.Enabled = false;
+            Fold.FlatStyle = FlatStyle.Flat;
+            Fold.Location = new Point(1388, 0);
+            Fold.Name = "Fold";
+            Fold.Size = new Size(94, 96);
+            Fold.TabIndex = 2;
+            Fold.Text = "Fold";
+            Fold.UseVisualStyleBackColor = false;
+            Fold.Click += Fold_Click;
+            // 
+            // Poker
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.MidnightBlue;
             ClientSize = new Size(1482, 823);
             Controls.Add(UI);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.Fixed3D;
             MaximizeBox = false;
-            Name = "Form1";
-            Text = "Form1";
+            Name = "Poker";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Poker";
             TableField.ResumeLayout(false);
             TableField.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             UI.ResumeLayout(false);
             ButtonsField.ResumeLayout(false);
+            tableLayoutPanel2.ResumeLayout(false);
+            tableLayoutPanel2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -168,5 +261,10 @@ namespace PokerTry2
         private Button Bet;
         private Label label1;
         private Label Pot;
+        private TableLayoutPanel tableLayoutPanel2;
+        private TextBox BetAmount;
+        private Button Replace;
+        private Button button1;
+        private Button button2;
     }
 }

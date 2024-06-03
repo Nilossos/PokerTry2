@@ -21,27 +21,27 @@ namespace PokerTry2.Controllers
             this.playerService = playerService;
         }
 
-        public void StartBets()
+        public async Task StartBets()
         {
-            bettingRoundService.RunBettingRound();
+            await bettingRoundService.RunBettingRound();
         }
 
         public void Bet(Player player, int amount)
         {
             playerService.Bet(player, amount);
-            bettingRoundService.RunBettingRound();
+            bettingRoundService.PlayerMadeMove();
         }
 
         public void Call(Player player)
         {
             playerService.Call(player);
-            bettingRoundService.RunBettingRound();
+            bettingRoundService.PlayerMadeMove();
         }
 
         public void Fold(Player player)
         {
             playerService.Fold(player);
-            bettingRoundService.RunBettingRound();
+            bettingRoundService.PlayerMadeMove();
         }
     }
 }

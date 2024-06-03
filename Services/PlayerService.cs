@@ -1,5 +1,6 @@
 ﻿using Poker.Entity;
 using Poker.Models;
+using Poker1.Models;
 using PokerTry2.Services;
 
 namespace Poker1.Services
@@ -10,6 +11,7 @@ namespace Poker1.Services
         void Bet(Player player, int betAmount);
         //void Raise(Player player, int raiseAmount);
         void Fold(Player player);
+        Task Replace(Player player, List<Card> cards);
     }
 
     public class PlayerService : IPlayerService
@@ -62,16 +64,36 @@ namespace Poker1.Services
             drawer.DrawBetType(player, gameStateService.TableField, BetType.Fold);
         }
 
-        public void PlaceBet(Player player, int amount)
+        public async Task Replace(Player player, List<Card> cards)
         {
-            if (player == null || amount == 0) return;
+            //if (player.Cards.Count < gameStateService.Deck)
+            //{
+            //    throw new InvalidOperationException("Недостаточно карт в колоде для замены.");
+            //}
 
-            // Управление состоянием игрока и игры
+            for (int i = 0; i < player.Cards.Count; i++)
+            {
+                if (cards.Contains(player.Cards[i]))
+                {
+                    player.Cards[i] = gameStateService.Deck.GetCard();
+                }
+            }
+            drawer.ClearCards(player, gameStateService.TableField);
+            await Task.Delay(1000);
+            drawer.DrawCards(player, gameStateService.TableField);
+        }
+
+        private void PlaceBet(Player player, int amount)
+        {
+            if (player == null) return;
+
             player.Stack -= amount;
             player.CurrentBet += amount;
             gameStateService.CurrentGlobalBet = player.CurrentBet;
             gameStateService.Pot += amount;
             drawer.ReloadPage(gameStateService.Players, gameStateService.Pot, gameStateService.TableField);
         }
+
+
     }
 }

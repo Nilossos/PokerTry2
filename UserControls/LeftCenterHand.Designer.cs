@@ -62,6 +62,7 @@
             HandPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 72F));
             HandPanel.Size = new Size(162, 360);
             HandPanel.TabIndex = 0;
+            HandPanel.Paint += HandPanel_Paint;
             // 
             // DealerMark
             // 

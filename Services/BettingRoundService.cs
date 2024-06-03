@@ -7,6 +7,7 @@ namespace Poker1.Services;
 public interface IBettingRoundService
 {
     public Task RunBettingRound();
+    public void PlayerMadeMove();
 }
 
 public class BettingRoundService : IBettingRoundService
@@ -14,7 +15,8 @@ public class BettingRoundService : IBettingRoundService
     private readonly IGameStateService gameStateService;
     private readonly IDrawer drawer;
     private readonly IPlayerService playerService;
-    private int currentPlayerIndex = 0;
+    private TaskCompletionSource<bool> playerMoveTcs;
+    private bool dealerMoved = false;
 
     public BettingRoundService(IGameStateService gameStateService, IDrawer drawer, IPlayerService playerService)
     {
@@ -25,35 +27,42 @@ public class BettingRoundService : IBettingRoundService
 
     public async Task RunBettingRound()
     {
+        drawer.DrawStacks(gameStateService.Players, gameStateService.TableField);
         drawer.DeactivateButtons(gameStateService.ButtonsField);
-        bool exitLoop = false;
         bool bettingComplete = false;
         int dealerIndex = gameStateService.Players.FindIndex(p => p.IsDealer);
+        int currentPlayerIndex = (dealerIndex + 1) % gameStateService.Players.Count;
 
-        while (!bettingComplete && !exitLoop)
+        while (!bettingComplete)
         {
-            for (int i = currentPlayerIndex; i <= gameStateService.Players.Count; i++)
+            Player currentPlayer = gameStateService.Players[currentPlayerIndex];
+            if (!currentPlayer.IsFolded && !currentPlayer.IsAllIn)
             {
-                currentPlayerIndex = (dealerIndex + i) % gameStateService.Players.Count;
-                Player currentPlayer = gameStateService.Players[currentPlayerIndex];
-                if (!currentPlayer.IsFolded && !currentPlayer.IsAllIn)
+                if (currentPlayer != gameStateService.Players.First())
                 {
-                    if (currentPlayer != gameStateService.Players.First())
-                    {
-                        await Task.Delay(1000);
-                        MakeBotMove(currentPlayer);
-                        await Task.Delay(1000);
-                    }
-                    else
-                    {
-                        drawer.ActivateButtons(gameStateService.ButtonsField);
-                        exitLoop = true;
-                        break;
-                    }
+                    await Task.Delay(1000);
+                    MakeBotMove(currentPlayer);
+                    await Task.Delay(1000);
                 }
-                bettingComplete = CheckBettingComplete();
+                else
+                {
+                    drawer.ActivateButtons(gameStateService.ButtonsField, dealerMoved);
+                    playerMoveTcs = new TaskCompletionSource<bool>();
+                    await playerMoveTcs.Task;
+                    drawer.DeactivateButtons(gameStateService.ButtonsField);
+                }
+                if(currentPlayer.IsDealer)
+                {
+                    dealerMoved = true;
+                }
             }
+            bettingComplete = CheckBettingComplete();
+            currentPlayerIndex = (currentPlayerIndex + 1) % gameStateService.Players.Count;
         }
+    }
+    public void PlayerMadeMove()
+    {
+        playerMoveTcs?.TrySetResult(true); 
     }
 
     private async Task MakeBotMove(Player bot)
@@ -65,20 +74,20 @@ public class BettingRoundService : IBettingRoundService
         else
         {
             var random = new Random();
-            var action = random.Next(0, 3); // 0 - call, 1 - raise, 2 - fold
+            var action = random.Next(0, 100);
 
-            switch (action)
+            if (action < 60)
             {
-                case 0:
-                    playerService.Call(bot);
-                    break;
-                case 1:
-                    var raiseAmount = random.Next(1, bot.Stack / 6);
-                    playerService.Bet(bot, raiseAmount);
-                    break;
-                case 2:
-                    playerService.Fold(bot);
-                    break;
+                playerService.Call(bot);
+            }
+            else if (action < 80 && !dealerMoved)
+            {
+                var raiseAmount = random.Next(1, bot.Stack / 6);
+                playerService.Bet(bot, raiseAmount);
+            }
+            else
+            {
+                playerService.Fold(bot);
             }
         }
     }
@@ -86,6 +95,6 @@ public class BettingRoundService : IBettingRoundService
     private bool CheckBettingComplete()
     {
         int highestBet = gameStateService.Players.Max(p => p.CurrentBet);
-        return gameStateService.Players.All(p => p.IsFolded || p.IsAllIn || p.CurrentBet == highestBet);
+        return gameStateService.Players.All(p => p.IsFolded || p.IsAllIn || p.CurrentBet == highestBet && dealerMoved);
     }
 }

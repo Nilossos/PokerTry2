@@ -15,14 +15,19 @@ namespace PokerTry2.Services
     public interface IDrawer
     {
         void DrawDealerMark(Player player, Panel panel);
+        void ClearCards(Player player, Panel field);
         void DrawCards(Player player, Panel panel);
         void DrawLastBets(List<Player> player, Panel panel);
+        void DrawLastBet(Player player, Panel panel);
         void DrawHands(Panel panel);
         void DrawStacks(List<Player> players, Panel field);
-        void ActivateButtons(Panel field);
+        void ActivateButtons(Panel field, bool dealerMoved = false);
         void DeactivateButtons(Panel field);
+        void ActivateReplaceButton(Panel field);
+        void DeactivateReplaceButton(Panel field);
         void ReloadPage(List<Player> players, int pot, Panel field);
         void DrawBetType(Player player, Panel field, BetType betType);
+        void OpenCards(Panel panel);
     }
 
     public class ObjectDrawer : IDrawer
@@ -126,7 +131,7 @@ namespace PokerTry2.Services
         {
             UserControl hand = FindHand(player, field);
             Control label = FindControlWithTag(hand, "Stack");
-            if(label is Label)
+            if (label is Label)
             {
                 label = (Label)label;
                 label.Text = "Stack: " + player.Stack.ToString();
@@ -143,43 +148,96 @@ namespace PokerTry2.Services
             }
         }
 
-        public void DrawCards(Player player, Panel field)
+        public void ClearCards(Player player, Panel field)
         {
-            for (int i = 0; i < player.Cards.Count; i++)
+            UserControl hand = FindHand(player, field);
+            TableLayoutPanel handPanel = FindControlWithTag(hand, "HandPanel") as TableLayoutPanel;
+            for (int i = handPanel.Controls.Count - 1; i >= 0; i--)
             {
-                PictureBox pictureBox = cardImageProvider.CreateCardPictureBox(player.Cards[i], player, i);
-                UserControl hand = FindHand(player, field);
-                if (player.Position == PlayerPosition.BottomCenter)
+                Control control = handPanel.Controls[i];
+                if (control is PictureBox pictureBox && pictureBox.Tag is Card)
                 {
-                    AddToHand(hand, pictureBox, i, 1);
-                }
-                if (player.Position == PlayerPosition.LeftCenter)
-                {
-                    AddToHand(hand, pictureBox, 0, i);
-                }
-                if (player.Position == PlayerPosition.TopLeft)
-                {
-                    AddToHand(hand, pictureBox, i, 0);
-                }
-                if (player.Position == PlayerPosition.TopRight)
-                {
-                    AddToHand(hand, pictureBox, i, 0);
-                }
-                if (player.Position == PlayerPosition.RightCenter)
-                {
-                    AddToHand(hand, pictureBox, 1, i);
+                    handPanel.Controls.Remove(control);
+                    pictureBox.Dispose();
                 }
             }
         }
 
-        public void ActivateButtons(Panel field)
+
+        public void DrawCards(Player player, Panel field)
+        {
+            UserControl hand = FindHand(player, field);
+            TableLayoutPanel handPanel = hand.Controls.OfType<TableLayoutPanel>().FirstOrDefault();
+            for (int i = 0; i < player.Cards.Count; i++)
+            {
+                bool cardExists = false;
+
+                foreach (Control control in handPanel.Controls)
+                {
+                    if (control is PictureBox existingPictureBox && existingPictureBox.Tag is Card existingCard)
+                    {
+                        if (existingCard.Equals(player.Cards[i]))
+                        {
+                            cardExists = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!cardExists)
+                {
+                    PictureBox pictureBox = cardImageProvider.CreateCardPictureBox(player.Cards[i], player, i);
+                    pictureBox.Tag = player.Cards[i];
+                    if (player.Position == PlayerPosition.BottomCenter)
+                    {
+                        pictureBox.Click += (sender, e) =>
+                        {
+                            Card card = pictureBox.Tag as Card;
+                            if (pictureBox.BorderStyle == BorderStyle.None)
+                            {
+                                pictureBox.BorderStyle = BorderStyle.Fixed3D; // Или любой другой стиль по вашему выбору
+                            }
+                            else
+                            {
+                                pictureBox.BorderStyle = BorderStyle.None;
+                            }
+                        };
+                        AddToHand(hand, pictureBox, i, 1);
+                    }
+                    if (player.Position == PlayerPosition.LeftCenter)
+                    {
+                        AddToHand(hand, pictureBox, 0, i);
+                    }
+                    if (player.Position == PlayerPosition.TopLeft)
+                    {
+                        AddToHand(hand, pictureBox, i, 0);
+                    }
+                    if (player.Position == PlayerPosition.TopRight)
+                    {
+                        AddToHand(hand, pictureBox, i, 0);
+                    }
+                    if (player.Position == PlayerPosition.RightCenter)
+                    {
+                        AddToHand(hand, pictureBox, 1, i);
+                    }
+                }
+            }
+        }
+
+        public void ActivateButtons(Panel field, bool dealerMoved = false)
         {
             Button bet = FindControlWithTag(field, "Bet") as Button;
             Button call = FindControlWithTag(field, "Call") as Button;
             Button fold = FindControlWithTag(field, "Fold") as Button;
-            bet.Enabled = true;
+            if (!dealerMoved)
+            {
+                bet.Enabled = true;
+                bet.BackColor = Color.White;
+            }
             call.Enabled = true;
+            call.BackColor = Color.White;
             fold.Enabled = true;
+            fold.BackColor = Color.White;
         }
 
         public void DeactivateButtons(Panel field)
@@ -188,8 +246,25 @@ namespace PokerTry2.Services
             Button call = FindControlWithTag(field, "Call") as Button;
             Button fold = FindControlWithTag(field, "Fold") as Button;
             bet.Enabled = false;
+            bet.BackColor = Color.Gray;
             call.Enabled = false;
+            call.BackColor = Color.Gray;
             fold.Enabled = false;
+            fold.BackColor = Color.Gray;
+        }
+
+        public void ActivateReplaceButton(Panel field)
+        {
+            Button replaceButton = FindControlWithTag(field, "Replace") as Button;
+            replaceButton.Enabled = true;
+            replaceButton.BackColor = Color.White;
+        }
+
+        public void DeactivateReplaceButton(Panel field)
+        {
+            Button replaceButton = FindControlWithTag(field, "Replace") as Button;
+            replaceButton.Enabled = false;
+            replaceButton.BackColor = Color.Gray;
         }
 
         public void ReloadPage(List<Player> players, int pot, Panel field)
@@ -293,6 +368,30 @@ namespace PokerTry2.Services
             return hand;
         }
 
+        public void OpenCards(Panel panel)
+        {
+            foreach (Control control in panel.Controls)
+            {
+                if (control is UserControl handControl)
+                {
+                    TableLayoutPanel hand = (TableLayoutPanel)FindControlWithTag(handControl, "HandPanel");
+                    PictureBox[] cardPictureBoxes = hand.Controls.OfType<PictureBox>()
+                                                             .Where(pictureBox => pictureBox.Tag is Card)
+                                                             .ToArray();
+                    float angle = 0;
+                    if (control is LeftCenterHand) angle = 90;
+                    if (control is RightCenterHand) angle = -90;
+                    if (control is TopHand) angle = 180;
+
+                    foreach (PictureBox pictureBox in cardPictureBoxes)
+                    {
+                        Card card = (Card)pictureBox.Tag;
+                        Image cardImage = cardImageProvider.GetCardImgage(card, angle);
+                        pictureBox.Image = cardImage;
+                    }
+                }
+            }
+        }
     }
 
 }

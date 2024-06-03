@@ -46,7 +46,7 @@
             HandPanel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             HandPanel.BackColor = Color.Transparent;
             HandPanel.ColumnCount = 5;
-            HandPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 72F));
+            HandPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 74F));
             HandPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 72F));
             HandPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 72F));
             HandPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 72F));
@@ -60,14 +60,14 @@
             HandPanel.Name = "HandPanel";
             HandPanel.RowCount = 2;
             HandPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 67F));
-            HandPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 96F));
-            HandPanel.Size = new Size(360, 163);
+            HandPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 100F));
+            HandPanel.Size = new Size(362, 167);
             HandPanel.TabIndex = 0;
             // 
             // dealerMark
             // 
             dealerMark.Image = Properties.Resources.DealerMark;
-            dealerMark.Location = new Point(288, 0);
+            dealerMark.Location = new Point(290, 0);
             dealerMark.Margin = new Padding(0);
             dealerMark.Name = "dealerMark";
             dealerMark.Size = new Size(60, 66);
@@ -91,7 +91,7 @@
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(216, 67);
+            tableLayoutPanel1.Size = new Size(218, 67);
             tableLayoutPanel1.TabIndex = 2;
             // 
             // Stack
@@ -122,7 +122,7 @@
             BetType.AutoSize = true;
             BetType.Font = new Font("Segoe UI", 12F);
             BetType.ForeColor = Color.White;
-            BetType.Location = new Point(216, 0);
+            BetType.Location = new Point(218, 0);
             BetType.Margin = new Padding(0);
             BetType.Name = "BetType";
             BetType.Size = new Size(0, 28);
@@ -138,7 +138,7 @@
             Controls.Add(HandPanel);
             Margin = new Padding(0);
             Name = "BottomCenterHand";
-            Size = new Size(360, 163);
+            Size = new Size(362, 167);
             HandPanel.ResumeLayout(false);
             HandPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dealerMark).EndInit();

@@ -15,6 +15,16 @@ namespace PokerTry2
         public LeftCenterHand()
         {
             InitializeComponent();
+            this.SetStyle(ControlStyles.DoubleBuffer, true);
+            this.SetStyle(ControlStyles.UserPaint, true);
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.UpdateStyles();
+        }
+
+        private void HandPanel_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

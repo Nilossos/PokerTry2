@@ -27,49 +27,53 @@ namespace PokerTry2.Services
             };
             if (player.Position == PlayerPosition.TopLeft || player.Position == PlayerPosition.TopRight)
             {
-                RotateImage(pictureBox, 180);
+                RotatePictureBox(pictureBox, 180);
             }
             if (player.Position == PlayerPosition.LeftCenter)
             {
-                RotateImage(pictureBox, 90);
+                RotatePictureBox(pictureBox, 90);
             }
             else if(player.Position == PlayerPosition.RightCenter)
             {
-                RotateImage(pictureBox, -90);
+                RotatePictureBox(pictureBox, -90);
             }
             return pictureBox;
         }
 
-        public void OpenCards(Player player)
+        public Image GetCardImgage(Card card, float angle)
         {
-            foreach (Card card in player.Cards)
-            {
-                PictureBox pictureBox = FindPictureBoxForCard(card);
-                if (pictureBox != null)
-                {
-                    RotateImage(pictureBox, 0);
-                }
-            }
+            Image cardImage = card.Image;
+            cardImage = RotateImage(cardImage, angle);
+            return cardImage;
         }
 
-        private PictureBox FindPictureBoxForCard(Card card)
+        private void RotatePictureBox(PictureBox pictureBox, float angle)
         {
-            return null;
-        }
-
-        private void RotateImage(PictureBox pictureBox, float angle)
-        {
-            if (pictureBox.Image == null)
-                return;
-
             Image originalImage = pictureBox.Image;
+
+            // Поворачиваем изображение
+            Image rotatedImage = RotateImage(originalImage, angle);
+
+            // Обновляем изображение в PictureBox
+            pictureBox.Image = rotatedImage;
+
+            // Меняем ширину и высоту PictureBox местами
+            var tmp = pictureBox.Width;
+            pictureBox.Width = pictureBox.Height;
+            pictureBox.Height = tmp;
+        }
+
+        private Image RotateImage(Image originalImage, float angle)
+        {
+            // Проверяем, что изображение не пусто
+            if (originalImage == null)
+                return null;
 
             // Для поворота на 180 градусов не меняем размер изображения
             if (Math.Abs(angle - 180) < float.Epsilon)
             {
                 originalImage.RotateFlip(RotateFlipType.Rotate180FlipNone);
-                pictureBox.Image = originalImage;
-                return;
+                return originalImage;
             }
 
             double angleRadians = angle * Math.PI / 180;
@@ -94,10 +98,7 @@ namespace PokerTry2.Services
                 g.DrawImage(originalImage, new Point(0, 0));
             }
 
-            pictureBox.Image = rotatedImage;
-            var tmp = pictureBox.Width;
-            pictureBox.Width = pictureBox.Height;
-            pictureBox.Height = tmp;
+            return rotatedImage;
         }
     }
 }

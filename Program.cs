@@ -18,23 +18,24 @@ namespace PokerTry2
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
             ApplicationConfiguration.Initialize();
-            var form1 = serviceProvider.GetRequiredService<Form1>();
-            Application.Run(form1);
+            var pokerForm = serviceProvider.GetRequiredService<Poker>();
+            Application.Run(pokerForm);
         }
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<Form1>();
+            services.AddSingleton<Poker>();
             services.AddSingleton<IGameStateService, GameStateService>();
             services.AddTransient<DealController>();
             services.AddTransient<BetController>();
+            services.AddTransient<ReplacementController>();
+            services.AddTransient<ResultController>();
             services.AddTransient<IPlayerService, PlayerService>();
             services.AddTransient<IDealService, DealService>();
+            services.AddTransient<IReplacementService, ReplacementService>();
             services.AddTransient<IBettingRoundService, BettingRoundService>();
+            services.AddTransient<IResultService, ResultService>();
             services.AddTransient<IDrawer, ObjectDrawer>();
-
-            services.AddTransient(provider =>
-                new Lazy<IDealService>(() => provider.GetRequiredService<DealService>()));
         }
     }
 }

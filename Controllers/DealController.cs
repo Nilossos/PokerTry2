@@ -15,7 +15,7 @@ public class DealController
         this.dealService = dealService;
     }
 
-    public void StartDeal()
+    public async Task StartDeal()
     {
         dealService.StartDeal();
     }

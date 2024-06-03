@@ -2,6 +2,7 @@
 using Poker.Models;
 using Poker1.Models;
 using PokerTry2.Models;
+using PokerTry2.Services;
 
 namespace Poker1.Services
 {
@@ -13,7 +14,8 @@ namespace Poker1.Services
         int CurrentGlobalBet { get; set; }
         Panel TableField { get; }
         Panel ButtonsField { get;}
-        void Reset(Panel tableField, Panel buttonsField);
+        void Create(Panel tableField, Panel buttonsField);
+        void Update();
     }
 
     public class GameStateService : IGameStateService
@@ -25,7 +27,7 @@ namespace Poker1.Services
         public Panel TableField { get; private set; }
         public Panel ButtonsField { get; private set; }
 
-        public void Reset(Panel tableField, Panel buttonsField)
+        public void Create(Panel tableField, Panel buttonsField)
         {
             Players = new List<Player>() {
                 new Player("Игрок", PlayerPosition.BottomCenter, true),
@@ -39,6 +41,13 @@ namespace Poker1.Services
             Deck = new Deck();
             TableField = tableField;
             ButtonsField = buttonsField;
+        }
+
+        public void Update()
+        {
+            Pot = 0;
+            CurrentGlobalBet = 0;
+            Deck = new Deck();
         }
     }
 }
