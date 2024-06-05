@@ -31,6 +31,10 @@ namespace PokerTry2
         private void InitializeComponent()
         {
             TableField = new Panel();
+            label4 = new Label();
+            label3 = new Label();
+            label2 = new Label();
+            label1 = new Label();
             Pot = new Label();
             pictureBox1 = new PictureBox();
             UI = new TableLayoutPanel();
@@ -39,8 +43,8 @@ namespace PokerTry2
             Call = new Button();
             BetAmount = new TextBox();
             Replace = new Button();
-            button1 = new Button();
-            button2 = new Button();
+            Increase_Button = new Button();
+            Decrease_button = new Button();
             Bet = new Button();
             Fold = new Button();
             TableField.SuspendLayout();
@@ -55,6 +59,10 @@ namespace PokerTry2
             TableField.BackColor = Color.Green;
             TableField.BackgroundImage = Properties.Resources.table11;
             TableField.BackgroundImageLayout = ImageLayout.Zoom;
+            TableField.Controls.Add(label4);
+            TableField.Controls.Add(label3);
+            TableField.Controls.Add(label2);
+            TableField.Controls.Add(label1);
             TableField.Controls.Add(Pot);
             TableField.Controls.Add(pictureBox1);
             TableField.Dock = DockStyle.Fill;
@@ -63,6 +71,54 @@ namespace PokerTry2
             TableField.Name = "TableField";
             TableField.Size = new Size(1482, 727);
             TableField.TabIndex = 0;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.BackColor = Color.Transparent;
+            label4.Font = new Font("Segoe UI", 12F);
+            label4.ForeColor = SystemColors.Control;
+            label4.Location = new Point(1420, 160);
+            label4.Name = "label4";
+            label4.Size = new Size(59, 28);
+            label4.TabIndex = 10;
+            label4.Text = "Бот 4";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.BackColor = Color.Transparent;
+            label3.Font = new Font("Segoe UI", 12F);
+            label3.ForeColor = SystemColors.Control;
+            label3.Location = new Point(157, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(59, 28);
+            label3.TabIndex = 9;
+            label3.Text = "Бот 2";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.BackColor = Color.Transparent;
+            label2.Font = new Font("Segoe UI", 12F);
+            label2.ForeColor = SystemColors.Control;
+            label2.Location = new Point(1238, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(59, 28);
+            label2.TabIndex = 8;
+            label2.Text = "Бот 3";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.BackColor = Color.Transparent;
+            label1.Font = new Font("Segoe UI", 12F);
+            label1.ForeColor = SystemColors.Control;
+            label1.Location = new Point(0, 145);
+            label1.Name = "label1";
+            label1.Size = new Size(59, 28);
+            label1.TabIndex = 7;
+            label1.Text = "Бот 1";
             // 
             // Pot
             // 
@@ -117,6 +173,7 @@ namespace PokerTry2
             // 
             // tableLayoutPanel2
             // 
+            tableLayoutPanel2.BackColor = Color.Green;
             tableLayoutPanel2.ColumnCount = 3;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
@@ -124,8 +181,8 @@ namespace PokerTry2
             tableLayoutPanel2.Controls.Add(Call, 0, 1);
             tableLayoutPanel2.Controls.Add(BetAmount, 0, 0);
             tableLayoutPanel2.Controls.Add(Replace, 2, 1);
-            tableLayoutPanel2.Controls.Add(button1, 1, 0);
-            tableLayoutPanel2.Controls.Add(button2, 1, 1);
+            tableLayoutPanel2.Controls.Add(Increase_Button, 1, 0);
+            tableLayoutPanel2.Controls.Add(Decrease_button, 1, 1);
             tableLayoutPanel2.Dock = DockStyle.Fill;
             tableLayoutPanel2.Location = new Point(94, 0);
             tableLayoutPanel2.Margin = new Padding(0);
@@ -162,6 +219,7 @@ namespace PokerTry2
             BetAmount.PlaceholderText = "Amount";
             BetAmount.Size = new Size(582, 27);
             BetAmount.TabIndex = 2;
+            BetAmount.Text = "0";
             BetAmount.KeyPress += BetAmount_KeyPress;
             // 
             // Replace
@@ -178,24 +236,25 @@ namespace PokerTry2
             Replace.UseVisualStyleBackColor = false;
             Replace.Click += Replace_Click;
             // 
-            // button1
+            // Increase_Button
             // 
-            button1.Location = new Point(585, 3);
-            button1.Name = "button1";
-            button1.Size = new Size(58, 29);
-            button1.TabIndex = 4;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            Increase_Button.Location = new Point(585, 3);
+            Increase_Button.Name = "Increase_Button";
+            Increase_Button.Size = new Size(58, 29);
+            Increase_Button.TabIndex = 4;
+            Increase_Button.Text = "+";
+            Increase_Button.UseVisualStyleBackColor = true;
+            Increase_Button.Click += Increase_Click;
             // 
-            // button2
+            // Decrease_button
             // 
-            button2.Location = new Point(585, 51);
-            button2.Name = "button2";
-            button2.Size = new Size(58, 29);
-            button2.TabIndex = 5;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
+            Decrease_button.Location = new Point(585, 51);
+            Decrease_button.Name = "Decrease_button";
+            Decrease_button.Size = new Size(58, 29);
+            Decrease_button.TabIndex = 5;
+            Decrease_button.Text = "-";
+            Decrease_button.UseVisualStyleBackColor = true;
+            Decrease_button.Click += Decrease_Click;
             // 
             // Bet
             // 
@@ -264,7 +323,10 @@ namespace PokerTry2
         private TableLayoutPanel tableLayoutPanel2;
         private TextBox BetAmount;
         private Button Replace;
-        private Button button1;
-        private Button button2;
+        private Button Increase_Button;
+        private Button Decrease_button;
+        private Label label4;
+        private Label label3;
+        private Label label2;
     }
 }

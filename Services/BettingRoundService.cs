@@ -24,7 +24,7 @@ public class BettingRoundService : IBettingRoundService
         this.drawer = drawer;
         this.playerService = playerService;
     }
-
+    //FIXME Сделать победу последнего игрока с картами
     public async Task RunBettingRound()
     {
         drawer.DrawStacks(gameStateService.Players, gameStateService.TableField);
@@ -32,6 +32,7 @@ public class BettingRoundService : IBettingRoundService
         bool bettingComplete = false;
         int dealerIndex = gameStateService.Players.FindIndex(p => p.IsDealer);
         int currentPlayerIndex = (dealerIndex + 1) % gameStateService.Players.Count;
+        dealerMoved = false;
 
         while (!bettingComplete)
         {
@@ -47,6 +48,7 @@ public class BettingRoundService : IBettingRoundService
                 else
                 {
                     drawer.ActivateButtons(gameStateService.ButtonsField, dealerMoved);
+                    playerMoveTcs = new TaskCompletionSource<bool>();
                     playerMoveTcs = new TaskCompletionSource<bool>();
                     await playerMoveTcs.Task;
                     drawer.DeactivateButtons(gameStateService.ButtonsField);

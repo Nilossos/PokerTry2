@@ -9,14 +9,17 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 public class DealController
 {
+    private readonly IGameStateService gameStateService;
     private readonly IDealService dealService;
-    public DealController(IDealService dealService)
+    public DealController(IGameStateService gameStateService, IDealService dealService)
     {
+        this.gameStateService = gameStateService;
         this.dealService = dealService;
     }
 
     public async Task StartDeal()
     {
+        gameStateService.Update();
         dealService.StartDeal();
     }
 }

@@ -12,10 +12,10 @@ namespace Poker1.Services
         Deck Deck { get; }
         int Pot { get; set; }
         int CurrentGlobalBet { get; set; }
-        Panel TableField { get; }
-        Panel ButtonsField { get;}
-        void Create(Panel tableField, Panel buttonsField);
-        void Update();
+        Panel TableField { get; } //design
+        Panel ButtonsField { get; } //design
+        void Create(Panel tableField, Panel buttonsField); //design
+        void Update(); 
     }
 
     public class GameStateService : IGameStateService
@@ -48,6 +48,14 @@ namespace Poker1.Services
             Pot = 0;
             CurrentGlobalBet = 0;
             Deck = new Deck();
+
+            foreach (var player in Players)
+            {
+                player.IsFolded = false;
+                player.IsAllIn = false;
+                player.Cards = new List<Card>();
+                player.CurrentBet = 0;
+            }
         }
     }
 }

@@ -101,7 +101,7 @@ namespace PokerTry2.Services
             Field.Controls.Add(bottomCenterHand);
 
             LeftCenterHand leftCenterHand = new PokerTry2.LeftCenterHand();
-            leftCenterHand.Location = new Point((100), Field.Height / 2 - leftCenterHand.Height / 2);
+            leftCenterHand.Location = new Point((100) + 20, Field.Height / 2 - leftCenterHand.Height / 2);
             Field.Controls.Add(leftCenterHand);
 
             TopHand topLeftHand = new PokerTry2.TopHand();
@@ -115,7 +115,7 @@ namespace PokerTry2.Services
             Field.Controls.Add(topRightHand);
 
             RightCenterHand rightCenterHand = new PokerTry2.RightCenterHand();
-            rightCenterHand.Location = new Point(Field.Width - rightCenterHand.Width - (100), Field.Height / 2 - rightCenterHand.Height / 2);
+            rightCenterHand.Location = new Point(Field.Width - rightCenterHand.Width - (105), Field.Height / 2 - rightCenterHand.Height / 2);
             Field.Controls.Add(rightCenterHand);
         }
 
@@ -163,6 +163,20 @@ namespace PokerTry2.Services
             }
         }
 
+        public void ClearLastBet(Player player, Panel field)
+        {
+            UserControl hand = FindHand(player, field);
+            TableLayoutPanel handPanel = FindControlWithTag(hand, "HandPanel") as TableLayoutPanel;
+            for (int i = handPanel.Controls.Count - 1; i >= 0; i--)
+            {
+                Control control = handPanel.Controls[i];
+                if (control is PictureBox pictureBox && pictureBox.Tag is Card)
+                {
+                    handPanel.Controls.Remove(control);
+                    pictureBox.Dispose();
+                }
+            }
+        }
 
         public void DrawCards(Player player, Panel field)
         {

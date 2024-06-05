@@ -18,27 +18,57 @@ namespace PokerTry2.Services
     {
         private readonly IDrawer drawer;
         private readonly IGameStateService gameStateService;
-
+        //private readonly Form mainForm;
         public DealService(IGameStateService gameStateService, IDrawer drawer)
         {
             this.drawer = drawer;
             this.gameStateService = gameStateService;
+            //this.mainForm = mainForm;
         }
 
         public void StartDeal()
         {
-            InitializeHands();
-            AssignDealer();
+            drawer.ReloadPage(gameStateService.Players, gameStateService.Pot, gameStateService.TableField);
             CollectAnte(50);
+            AssignDealer();
             DealCards();
-        }
-
-        private void InitializeHands()
-        {
-            drawer.DrawHands(gameStateService.TableField);
             drawer.DrawStacks(gameStateService.Players, gameStateService.TableField);
         }
 
+        //private void InitializeHands()
+        //{
+        //    drawer.DrawHands(gameStateService.TableField);
+        //    drawer.DrawStacks(gameStateService.Players, gameStateService.TableField);
+        //}
+
+        private void CollectAnte(int ante)
+        {
+            if (ante <= 0)
+            {
+                //FIXME Настроить автоматическое увеличение ante
+                throw new ArgumentException("Ante must be a positive integer.", nameof(ante));
+            }
+
+            for (int i = gameStateService.Players.Count - 1; i >= 0; i--)
+            {
+                Player currentPlayer = gameStateService.Players[i];
+                currentPlayer.Stack -= ante;
+                gameStateService.Pot += ante;
+                if (currentPlayer.Stack < 0)
+                {
+                    gameStateService.Players.RemoveAt(i);
+                }
+            }
+            if (gameStateService.Players.Count == 1)
+            {
+                // Announce the winner and end the game
+                var result = MessageBox.Show("Поздравляем с победой!", "Игра окончена", MessageBoxButtons.OK);
+                //if (result == DialogResult.OK)
+                //{
+                //    mainForm.Close();
+                //}
+            }
+        }
         private string AssignDealer()
         {
             if (gameStateService.Players.Count >= 2)
@@ -54,30 +84,6 @@ namespace PokerTry2.Services
             else
             {
                 throw new InvalidOperationException("Недостаточно игроков для смены дилера.");
-            }
-        }
-
-        private void CollectAnte(int ante)
-        {
-            if (ante <= 0)
-            {
-                throw new ArgumentException("Ante must be a positive integer.", nameof(ante));
-            }
-
-            for (int i = gameStateService.Players.Count - 1; i >= 0; i--)
-            {
-                Player currentPlayer = gameStateService.Players[i];
-                currentPlayer.Stack -= ante;
-                gameStateService.Pot += ante;
-                if (currentPlayer.Stack < 0)
-                {
-                    gameStateService.Players.RemoveAt(i);
-                }
-            }
-
-            if (gameStateService.Players.Count == 1)
-            {
-
             }
         }
 

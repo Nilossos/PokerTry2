@@ -64,6 +64,16 @@ namespace Poker1.Services
             drawer.DrawBetType(player, gameStateService.TableField, BetType.Fold);
         }
 
+        private void PlaceBet(Player player, int amount)
+        {
+            if (player == null) return;
+
+            player.Stack -= amount;
+            player.CurrentBet += amount;
+            gameStateService.CurrentGlobalBet = player.CurrentBet;
+            gameStateService.Pot += amount;
+            drawer.ReloadPage(gameStateService.Players, gameStateService.Pot, gameStateService.TableField);
+        }
         public async Task Replace(Player player, List<Card> cards)
         {
             //if (player.Cards.Count < gameStateService.Deck)
@@ -82,18 +92,5 @@ namespace Poker1.Services
             await Task.Delay(1000);
             drawer.DrawCards(player, gameStateService.TableField);
         }
-
-        private void PlaceBet(Player player, int amount)
-        {
-            if (player == null) return;
-
-            player.Stack -= amount;
-            player.CurrentBet += amount;
-            gameStateService.CurrentGlobalBet = player.CurrentBet;
-            gameStateService.Pot += amount;
-            drawer.ReloadPage(gameStateService.Players, gameStateService.Pot, gameStateService.TableField);
-        }
-
-
     }
 }

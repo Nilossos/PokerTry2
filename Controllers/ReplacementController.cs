@@ -23,8 +23,9 @@ namespace PokerTry2.Controllers
 
         public async Task Replace(Player player, List<Card> cards)
         {
-            replacementService.PlayerMadeMove();
             await playerService.Replace(player, cards);
+            replacementService.PlayerMadeMove();
+
         }
     }
 }

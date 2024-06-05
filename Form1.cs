@@ -16,19 +16,20 @@ namespace PokerTry2
         private readonly ReplacementController replacementController;
         private readonly ResultController resultController;
         private readonly IGameStateService gameStateService;
+        private readonly IDrawer drawer;
         private readonly Player player;
 
-        public Poker(IGameStateService gameStateService, DealController dealController, BetController betController, ReplacementController replacementController, ResultController resultController)
+        public Poker(IDrawer drawer, IGameStateService gameStateService, DealController dealController, BetController betController, ReplacementController replacementController, ResultController resultController)
         {
             InitializeComponent();
-
+            this.drawer = drawer;
             this.gameStateService = gameStateService;
             this.betController = betController;
             this.dealController = dealController;
             this.replacementController = replacementController;
             this.resultController = resultController;
             gameStateService.Create(TableField, ButtonsField);
-
+            
             StartGame();
 
             player = gameStateService.Players.Find(p => p.Position == PlayerPosition.BottomCenter);
@@ -36,19 +37,39 @@ namespace PokerTry2
 
         private async void StartGame()
         {
+            drawer.DrawHands(gameStateService.TableField);
+            drawer.DrawStacks(gameStateService.Players, gameStateService.TableField);
             while (gameStateService.Players.Count != 1)
             {
+                foreach (var player in gameStateService.Players)
+                {
+                    drawer.ClearCards(player, TableField);
+                }
+                await Task.Delay(1000);
+                MessageBox.Show("Раздача началась");
                 await dealController.StartDeal();
+                await Task.Delay(1000);
+                MessageBox.Show("Ставки начались");
                 await betController.StartBets();
+                MessageBox.Show("Ставки окончены");
                 await replacementController.StartReplacements();
+                MessageBox.Show("Замены окончены. Определяем победителя");
+                await Task.Delay(1000);
                 await resultController.DeterminateResult();
-                gameStateService.Update();
             }
         }
 
         private void Bet_Click(object sender, EventArgs e)
         {
-            betController.Bet(gameStateService.Players.First(), 100);
+            int betAmount;
+            if (int.TryParse(BetAmount.Text, out betAmount) && betAmount > 0)
+            {
+                betController.Bet(gameStateService.Players.First(), betAmount);
+            }
+            else
+            {
+                MessageBox.Show("Please enter a valid bet amount greater than 0.");
+            }
         }
         private void Call_Click(object sender, EventArgs e)
         {
